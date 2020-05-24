@@ -1,10 +1,10 @@
-import React from "react";
-import { StickyContainer, Sticky } from "react-sticky";
+import React from 'react'
+import { StickyContainer, Sticky } from 'react-sticky'
 
-import Header from "./components/header/Header";
-import Router from "./Router";
-import Footer from "./components/footer/Footer";
-import "./styles/global.scss";
+import Header from './components/header/Header'
+import Router from './Router'
+import Footer from './components/footer/Footer'
+import './styles/global.scss'
 
 const App = () => {
   return (
@@ -16,11 +16,10 @@ const App = () => {
           </div>
         )}
       </Sticky>
-
       <Router />
       <Footer />
     </StickyContainer>
-  );
-};
+  )
+}
 
-export default App;
+export default App
