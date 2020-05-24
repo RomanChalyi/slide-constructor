@@ -65,6 +65,10 @@ const Header = () => {
     setOpenDrawer(open);
   };
 
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -157,6 +161,7 @@ const Header = () => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 color="inherit"
+                onClick={handleMenu}
               >
                 <AccountCircle />
               </IconButton>
@@ -179,6 +184,7 @@ const Header = () => {
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>Log out</MenuItem>
             </Menu>
           </Grid>
         </Grid>
