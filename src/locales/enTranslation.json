@@ -11,12 +11,13 @@
   },
   "CreateForm": {
     "filename": "filename",
-    "label-filename": "Name the file the first line",
+    "label-filename": "Create name file by first line",
     "text": "text",
-    "label-empty-slide": "Add a empty slide to the beginning and end",
+    "label-empty-slide": "Add an empty slide to the beginning and the end",
     "create": "create"
   },
   "TemplatesList": {
-    "title": "Select the slide template you want to create:"
+    "title": "Select the template to create a slide:"
   }
 }
+
