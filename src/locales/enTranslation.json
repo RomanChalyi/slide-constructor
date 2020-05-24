@@ -1,0 +1,22 @@
+{
+  "Header": {
+    "title": "SLIDE CONSTRUCTOR"
+  },
+  "Footer": {
+    "version": "version: 0.0.1"
+  },
+  "404": {
+    "title": "Page not found!",
+    "link": "Go Home"
+  },
+  "CreateForm": {
+    "filename": "filename",
+    "label-filename": "Name the file the first line",
+    "text": "text",
+    "label-empty-slide": "Add a empty slide to the beginning and end",
+    "create": "create"
+  },
+  "TemplatesList": {
+    "title": "Select the slide template you want to create:"
+  }
+}

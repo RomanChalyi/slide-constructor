@@ -1,0 +1,9 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  &Handler {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
