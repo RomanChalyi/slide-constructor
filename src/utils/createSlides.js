@@ -1,19 +1,17 @@
-import getRelationships from './getRelationships';
-import getBlocks from './songTemplate/getBlocks';
-import getText from './getText';
-import getIds from './getIds';
-import getLines from './getLines';
+import getRelationships from './getRelationships'
+import getBlocks from './songTemplate/getBlocks'
+import getText from './getText'
+import getIds from './getIds'
+import getLines from './getLines'
 
 const getSlide = (textSong, createEmptySlides) => {
-  const lines = getLines(textSong);
-  const quantitySlides = createEmptySlides
-    ? Math.ceil(lines.length / 2) + 2
-    : Math.ceil(lines.length / 2);
+  const lines = getLines(textSong)
+  const quantitySlides = createEmptySlides ? Math.ceil(lines.length / 2) + 2 : Math.ceil(lines.length / 2)
 
-  const ids = getIds(quantitySlides);
-  const { PKGParts, sldIdLst, lpstr } = getText(quantitySlides, ids, lines);
-  const relationships = getRelationships(quantitySlides, ids);
-  const blocks = getBlocks(quantitySlides, lines, createEmptySlides);
+  const ids = getIds(quantitySlides)
+  const { PKGParts, sldIdLst, lpstr } = getText(quantitySlides, ids, lines)
+  const relationships = getRelationships(quantitySlides, ids)
+  const blocks = getBlocks(quantitySlides, lines, createEmptySlides)
   const stringSlides = `<?xml version="1.0" encoding="UTF-8"?>
   <?mso-application progid="PowerPoint.Show"?>
   <pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage">
@@ -5439,12 +5437,12 @@ const getSlide = (textSong, createEmptySlides) => {
               <LinksUpToDate>false</LinksUpToDate>
               <SharedDoc>false</SharedDoc>
               <HyperlinksChanged>false</HyperlinksChanged>
-              <AppVersion>15.0000</AppVersion>
+                 <AppVersion>15.0000</AppVersion>
            </Properties>
         </pkg:xmlData>
      </pkg:part>
-  </pkg:package>`;
-  return new Blob([stringSlides]);
-};
+  </pkg:package>`
+  return new Blob([stringSlides])
+}
 
-export default getSlide;
+export default getSlide

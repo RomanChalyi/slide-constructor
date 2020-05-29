@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { saveAs } from 'file-saver';
+import React, { useState } from 'react'
+import { saveAs } from 'file-saver'
 import {
   Card,
   InputLabel,
@@ -12,36 +12,37 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-} from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
-import { form, formTitle } from './createSlideForm.module.scss';
-import createSlides from '../../utils/createSlides';
-import getFilename from '../../utils/getFilename';
+} from '@material-ui/core'
+import { useTranslation } from 'react-i18next'
+import { formContainer, formTitle } from './createSlideForm.module.scss'
+import createSlides from '../../utils/createSlides'
+import getFilename from '../../utils/getFilename'
 
 const CreateSlideForm = () => {
-  const { t } = useTranslation();
-  const [filename, setFilename] = useState('');
-  const [disableFilename, setDisableFilename] = useState(true);
-  const [textSong, setTextSong] = useState('');
-  const [createEmptySlides, setCreateEmptySlides] = useState(true);
+  const { t } = useTranslation()
+  const [form, setForm] = useState({ filename: '', defaultFilename: true, textSong: '', createEmptySlides: true })
 
-  const handleChangeCheckbox = (e) => setDisableFilename(e.target.checked);
-  const handleChangeCheckbox2 = (e) => setCreateEmptySlides(e.target.checked);
-  const handleChangeFilename = (e) => setFilename(e.target.value);
-  const handleChangeTextSong = (e) => setTextSong(e.target.value);
+  const handleChangeCheckbox = (e) => {
+    const { name, checked } = e.target
+    return setForm({ ...form, [name]: checked })
+  }
+  const handleChangeFilename = (e) => setForm({ ...form, filename: e.target.value })
+  const handleChangeTextSong = (e) => setForm({ ...form, textSong: e.target.value })
 
   const handleCreate = () => {
-    const name = getFilename(disableFilename, textSong, filename);
-    const slides = createSlides(textSong, createEmptySlides);
-    saveAs(slides, name);
-  };
+    const { defaultFilename, textSong, filename, createEmptySlides } = form
+
+    const name = getFilename(defaultFilename, textSong, filename)
+    const slides = createSlides(textSong, createEmptySlides)
+    saveAs(slides, name)
+  }
 
   return (
     <Box className="content">
-      <Container className={form} maxWidth="sm">
+      <Container className={formContainer} maxWidth="sm">
         <Card>
           <CardContent>
-            <InputLabel className={formTitle} htmlFor="event-title">
+            <InputLabel className={formTitle} htmlFor="form-title">
               {t('CreateForm.filename')}
               <Box component="span" color="error.main">
                 *
@@ -49,66 +50,38 @@ const CreateSlideForm = () => {
             </InputLabel>
             <TextField
               onChange={handleChangeFilename}
-              value={filename}
-              disabled={disableFilename}
-              id="form-title"
+              value={form.filename}
+              disabled={form.defaultFilename}
+              id="form-filename"
               fullWidth
               variant="outlined"
             />
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={disableFilename}
-                  onChange={handleChangeCheckbox}
-                  name="checkedB"
-                  color="primary"
-                />
-              }
+              control={<Checkbox checked={form.defaultFilename} onChange={handleChangeCheckbox} name="defaultFilename" color="primary" />}
               label={t('CreateForm.label-filename')}
             />
 
             <Typography style={{ margin: '20px 0px 5px' }} color="textSecondary">
-              {t('CreateForm.text')}
+              {t('CreateForm.textSong')}
               <Box component="span" color="error.main">
                 *
               </Box>
             </Typography>
-            <TextField
-              value={textSong}
-              onChange={handleChangeTextSong}
-              fullWidth
-              id="form-description"
-              multiline
-              rows="13"
-              variant="outlined"
-            />
+            <TextField value={form.song} onChange={handleChangeTextSong} fullWidth id="form-textSong" multiline rows="13" variant="outlined" />
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={createEmptySlides}
-                  onChange={handleChangeCheckbox2}
-                  name="checkedB"
-                  color="primary"
-                />
-              }
+              control={<Checkbox checked={form.createEmptySlides} onChange={handleChangeCheckbox} name="createEmptySlides" color="primary" />}
               label={t('CreateForm.label-empty-slide')}
             />
           </CardContent>
 
           <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              onClick={handleCreate}
-              aria-label="create"
-              size="small"
-              variant="contained"
-              color="primary"
-            >
+            <Button onClick={handleCreate} aria-label="create" size="small" variant="contained" color="primary">
               {t('CreateForm.create')}
             </Button>
           </CardActions>
         </Card>
       </Container>
     </Box>
-  );
-};
-export default CreateSlideForm;
+  )
+}
+export default CreateSlideForm

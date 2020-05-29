@@ -12,7 +12,7 @@
   "CreateForm": {
     "filename": "filename",
     "label-filename": "Create name file by first line",
-    "text": "text",
+    "textSong": "text song",
     "label-empty-slide": "Add an empty slide to the beginning and the end",
     "create": "create"
   },
