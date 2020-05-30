@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import CreateSlideForm from './pages/createSlideForm/CreateSlideForm'
 import TemplatesList from './pages/templatesList/TemplatesList'
 import NoMatchPage from './components/NoMatchPage'
-
+import { StickyContainer, Sticky } from 'react-sticky'
 import Autorization from './pages/Autorization/Autorization'
 import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
@@ -20,9 +20,17 @@ const RouterPageContent = () => (
 const Main = () => {
   return (
     <>
-      <Header />
-      <RouterPageContent />
-      <Footer />
+      <StickyContainer>
+        <Sticky topOffset={0}>
+          {({ style, isSticky }) => (
+            <div style={style} isSticky={isSticky}>
+              <Header />
+            </div>
+          )}
+        </Sticky>
+        <RouterPageContent />
+        <Footer />
+      </StickyContainer>
     </>
   )
 }
