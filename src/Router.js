@@ -22,8 +22,8 @@ const Main = () => {
     <>
       <StickyContainer>
         <Sticky topOffset={0}>
-          {({ style, isSticky }) => (
-            <div style={style} isSticky={isSticky}>
+          {({ style }) => (
+            <div style={style}>
               <Header />
             </div>
           )}
