@@ -10,11 +10,12 @@
     "link": "Go Home"
   },
   "CreateForm": {
-    "filename": "presentation title",
-    "label-name": "Use first line for title of presentation",
-    "presentationContent": "Presentation content",
-    "label-empty-slide": "Add an empty slide to the beginning and the end",
-    "create": "create"
+    "name": "Presentation title",
+    "defaultName": "Use first line for title of presentation",
+    "content": "Presentation content",
+    "emptyWrapper": "Add an empty slide to the beginning and the end",
+    "create": "create",
+    "extraEmptySlides": "Add extra empty slides"
   },
   "TemplatesList": {
     "title": "Select the template to create a slide:"

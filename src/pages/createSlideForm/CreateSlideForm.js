@@ -15,13 +15,12 @@ import {
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
-import createSlides from '../../utils/createSlides'
-import getFilename from '../../utils/getFilename'
-import { SONG } from '../../constant'
+import createPresentation from '../../utils/slideConstructor'
+import { getDefaultSetting, getFilename } from '../../utils'
 
-const CreateSlideForm = () => {
+const CreateSlideForm = ({ location }) => {
   const { t } = useTranslation()
-  const [form, setForm] = useState({ name: '', useDefaultName: true, presentationContent: '', createEmptySlides: true, type: SONG })
+  const [form, setForm] = useState(getDefaultSetting(location))
 
   const handleChangeCheckbox = (e) => {
     const { name, checked } = e.target
@@ -29,25 +28,22 @@ const CreateSlideForm = () => {
   }
   const handleDefaultName = (e) => {
     if (e.target.checked) {
-      return setForm({ ...form, name: getFilename(form.presentationContent), useDefaultName: true })
+      return setForm({ ...form, name: getFilename(form.content), defaultName: true })
     }
-    return setForm({ ...form, name: '', useDefaultName: false })
+    return setForm({ ...form, name: '', defaultName: false })
   }
 
-  const handleChangeFilename = (e) => setForm({ ...form, name: e.target.value })
-  const handlePresentationContent = (e) => setForm({ ...form, presentationContent: e.target.value })
+  const handleChangeName = (e) => setForm({ ...form, name: e.target.value })
+  const handlePresentationContent = (e) => setForm({ ...form, content: e.target.value, name: getFilename(e.target.value) })
 
   const handleCreate = () => {
-    const { useDefaultName, presentationContent, name, createEmptySlides } = form
-
-    // const name = getFilename(useDefaultName, presentationContent, name)
-    const slides = createSlides(presentationContent, createEmptySlides, form)
-    // saveAs(slides, name)
+    const presentation = createPresentation(form)
+    // saveAs(slides, form.name)
   }
 
   return (
     <Box className="content">
-      {/* <Container className={formContainer} maxWidth="sm">
+      <Container className={formContainer} maxWidth="sm">
         <Card>
           <CardContent>
             <InputLabel className={formTitle} htmlFor="form-title">
@@ -56,30 +52,26 @@ const CreateSlideForm = () => {
                 *
               </Box>
             </InputLabel>
-            <TextField onChange={handleChangeFilename} value={form.name} disabled={form.useDefaultName} id="form-name" fullWidth variant="outlined" />
+            <TextField onChange={handleChangeName} value={form.name} disabled={form.defaultName} id="form-name" fullWidth variant="outlined" />
             <FormControlLabel
-              control={<Checkbox checked={form.useDefaultName} onChange={handleDefaultName} name="useDefaultName" color="primary" />}
-              label={t('CreateForm.label-name')}
+              control={<Checkbox checked={form.defaultName} onChange={handleDefaultName} name="defaultName" color="primary" />}
+              label={t('CreateForm.defaultName')}
             />
 
             <Typography style={{ margin: '20px 0px 5px' }} color="textSecondary">
-              {t('CreateForm.presentationContent')}
+              {t('CreateForm.content')}
               <Box component="span" color="error.main">
                 *
               </Box>
             </Typography>
-            <TextField
-              value={form.song}
-              onChange={handlePresentationContent}
-              fullWidth
-              id="form-presentationContent"
-              multiline
-              rows="13"
-              variant="outlined"
+            <TextField value={form.content} onChange={handlePresentationContent} fullWidth multiline rows="13" variant="outlined" />
+            <FormControlLabel
+              control={<Checkbox checked={form.emptyWrapper} onChange={handleChangeCheckbox} name="emptyWrapper" color="primary" />}
+              label={t('CreateForm.emptyWrapper')}
             />
             <FormControlLabel
-              control={<Checkbox checked={form.createEmptySlides} onChange={handleChangeCheckbox} name="createEmptySlides" color="primary" />}
-              label={t('CreateForm.label-empty-slide')}
+              control={<Checkbox checked={form.extraEmptySlides} onChange={handleChangeCheckbox} name="extraEmptySlides" color="primary" />}
+              label={t('CreateForm.extraEmptySlides')}
             />
           </CardContent>
 
@@ -89,7 +81,7 @@ const CreateSlideForm = () => {
             </Button>
           </CardActions>
         </Card>
-      </Container> */}
+      </Container>
     </Box>
   )
 }
