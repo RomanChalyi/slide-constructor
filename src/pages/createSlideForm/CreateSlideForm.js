@@ -17,57 +17,66 @@ import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
 import createSlides from '../../utils/createSlides'
 import getFilename from '../../utils/getFilename'
+import { SONG } from '../../constant'
 
 const CreateSlideForm = () => {
   const { t } = useTranslation()
-  const [form, setForm] = useState({ filename: '', defaultFilename: true, textSong: '', createEmptySlides: true })
+  const [form, setForm] = useState({ name: '', useDefaultName: true, presentationContent: '', createEmptySlides: true, type: SONG })
 
   const handleChangeCheckbox = (e) => {
     const { name, checked } = e.target
     return setForm({ ...form, [name]: checked })
   }
-  const handleChangeFilename = (e) => setForm({ ...form, filename: e.target.value })
-  const handleChangeTextSong = (e) => setForm({ ...form, textSong: e.target.value })
+  const handleDefaultName = (e) => {
+    if (e.target.checked) {
+      return setForm({ ...form, name: getFilename(form.presentationContent), useDefaultName: true })
+    }
+    return setForm({ ...form, name: '', useDefaultName: false })
+  }
+
+  const handleChangeFilename = (e) => setForm({ ...form, name: e.target.value })
+  const handlePresentationContent = (e) => setForm({ ...form, presentationContent: e.target.value })
 
   const handleCreate = () => {
-    const { defaultFilename, textSong, filename, createEmptySlides } = form
+    const { useDefaultName, presentationContent, name, createEmptySlides } = form
 
-    const name = getFilename(defaultFilename, textSong, filename)
-    const slides = createSlides(textSong, createEmptySlides)
-    saveAs(slides, name)
+    // const name = getFilename(useDefaultName, presentationContent, name)
+    const slides = createSlides(presentationContent, createEmptySlides, form)
+    // saveAs(slides, name)
   }
 
   return (
     <Box className="content">
-      <Container className={formContainer} maxWidth="sm">
+      {/* <Container className={formContainer} maxWidth="sm">
         <Card>
           <CardContent>
             <InputLabel className={formTitle} htmlFor="form-title">
-              {t('CreateForm.filename')}
+              {t('CreateForm.name')}
               <Box component="span" color="error.main">
                 *
               </Box>
             </InputLabel>
-            <TextField
-              onChange={handleChangeFilename}
-              value={form.filename}
-              disabled={form.defaultFilename}
-              id="form-filename"
-              fullWidth
-              variant="outlined"
-            />
+            <TextField onChange={handleChangeFilename} value={form.name} disabled={form.useDefaultName} id="form-name" fullWidth variant="outlined" />
             <FormControlLabel
-              control={<Checkbox checked={form.defaultFilename} onChange={handleChangeCheckbox} name="defaultFilename" color="primary" />}
-              label={t('CreateForm.label-filename')}
+              control={<Checkbox checked={form.useDefaultName} onChange={handleDefaultName} name="useDefaultName" color="primary" />}
+              label={t('CreateForm.label-name')}
             />
 
             <Typography style={{ margin: '20px 0px 5px' }} color="textSecondary">
-              {t('CreateForm.textSong')}
+              {t('CreateForm.presentationContent')}
               <Box component="span" color="error.main">
                 *
               </Box>
             </Typography>
-            <TextField value={form.song} onChange={handleChangeTextSong} fullWidth id="form-textSong" multiline rows="13" variant="outlined" />
+            <TextField
+              value={form.song}
+              onChange={handlePresentationContent}
+              fullWidth
+              id="form-presentationContent"
+              multiline
+              rows="13"
+              variant="outlined"
+            />
             <FormControlLabel
               control={<Checkbox checked={form.createEmptySlides} onChange={handleChangeCheckbox} name="createEmptySlides" color="primary" />}
               label={t('CreateForm.label-empty-slide')}
@@ -80,7 +89,7 @@ const CreateSlideForm = () => {
             </Button>
           </CardActions>
         </Card>
-      </Container>
+      </Container> */}
     </Box>
   )
 }
