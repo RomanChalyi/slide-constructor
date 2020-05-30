@@ -16,7 +16,8 @@ const config = {
 // Initialize Firebase
 app.initializeApp(config)
 let auth = app.auth()
-// let db = app.firestore()
+let db = app.firestore()
+let usersDB = db.collection('users')
 
 const onAuthStateChanged = () => null
 
@@ -24,7 +25,7 @@ const signIn = (email, password) => auth.signInWithEmailAndPassword(email, passw
 
 const signUp = (email, password) => auth.createUserWithEmailAndPassword(email, password)
 
-export { onAuthStateChanged, signUp, signIn }
+export { onAuthStateChanged, signUp, signIn, usersDB }
 
 //UPDATE one
 // usersDB.doc('mario').update({
