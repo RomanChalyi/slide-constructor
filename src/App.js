@@ -16,11 +16,10 @@ const App = () => {
         usersDB
           .doc(user.uid)
           .get()
-          .then(user => console.log('user', user.data()))
-        localStorage.setItem('user', 'in')
+          .then(user => localStorage.setItem('user', JSON.stringify(user.data())))
         redirect = history.location.pathname
       } else {
-        localStorage.setItem('auth', 'out')
+        localStorage.removeItem('user')
         redirect = '/sign_in'
       }
       setIsload(true)
