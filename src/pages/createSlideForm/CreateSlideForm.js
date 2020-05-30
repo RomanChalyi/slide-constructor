@@ -66,12 +66,12 @@ const CreateSlideForm = ({ location }) => {
             </Typography>
             <TextField value={form.content} onChange={handlePresentationContent} fullWidth multiline rows="13" variant="outlined" />
             <FormControlLabel
-              control={<Checkbox checked={form.emptyWrapper} onChange={handleChangeCheckbox} name="emptyWrapper" color="primary" />}
-              label={t('CreateForm.emptyWrapper')}
+              control={<Checkbox checked={form.blankBeginningAndEnd} onChange={handleChangeCheckbox} name="blankBeginningAndEnd" color="primary" />}
+              label={t('CreateForm.blankBeginningAndEnd')}
             />
             <FormControlLabel
-              control={<Checkbox checked={form.extraEmptySlides} onChange={handleChangeCheckbox} name="extraEmptySlides" color="primary" />}
-              label={t('CreateForm.extraEmptySlides')}
+              control={<Checkbox checked={form.blankBesideSlide} onChange={handleChangeCheckbox} name="blankBesideSlide" color="primary" />}
+              label={t('CreateForm.blankBesideSlide')}
             />
           </CardContent>
 

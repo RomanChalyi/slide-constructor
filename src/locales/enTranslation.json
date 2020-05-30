@@ -13,9 +13,9 @@
     "name": "Presentation title",
     "defaultName": "Use first line for title of presentation",
     "content": "Presentation content",
-    "emptyWrapper": "Add an empty slide to the beginning and the end",
+    "blankBeginningAndEnd": "Add an empty slide to the beginning and the end",
     "create": "create",
-    "extraEmptySlides": "Add extra empty slides"
+    "blankBesideSlide": "Add extra empty slides"
   },
   "TemplatesList": {
     "title": "Select the template to create a slide:"

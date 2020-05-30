@@ -1,6 +1,8 @@
+import getSlideData from './slideData/getSlideData'
 
-const createPresentation =(formData) => {
-  console.log(formData, 'formData')
+const createPresentation = (formData) => {
+  const presentationData = getSlideData(formData)
+  // console.log(formData, 'formData')
 }
 
 export default createPresentation

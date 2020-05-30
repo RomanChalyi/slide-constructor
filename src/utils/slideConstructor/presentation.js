@@ -4,7 +4,6 @@ const getSlideData = (formData) => {
   //добавить пустые в начале [{value,size, type:empty}]
   //добавить пустые через одного //
   //сгенерить id
-  console.log(formData, formData)
   return formData
 }
 

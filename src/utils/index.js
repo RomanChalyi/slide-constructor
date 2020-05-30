@@ -1,19 +1,43 @@
-import { SONG, PREACHING } from '../constant'
+import { SONG, PREACHING, MAX_WIDTH_SLIDE_SONG, MAX_WIDTH_SLIDE_PREACHING } from '../constant'
 
 export const getDefaultSetting = (location) => {
   const url = location.pathname.split('/')
   const type = url[url.length - 1].toUpperCase()
-
+  const generalSettings = { name: '', content: '', type, maxFontSize: 40, fontFamily: 'Arial' }
   switch (type) {
     case SONG: {
-      return { name: '', content: '', defaultName: true, emptyWrapper: true, extraEmptySlides: false, type: SONG }
+      return {
+        ...generalSettings,
+        defaultName: true,
+        blankBeginningAndEnd: true,
+        blankBesideSlide: false,
+        lineBreak: false,
+        linesOnSlide: 2,
+        maxWidth: MAX_WIDTH_SLIDE_SONG,
+      }
     }
 
     case PREACHING: {
-      return { name: '', content: '', defaultName: false, emptyWrapper: true, extraEmptySlides: true, type: PREACHING }
+      return {
+        ...generalSettings,
+        defaultName: false,
+        blankBeginningAndEnd: true,
+        blankBesideSlide: true,
+        lineBreak: true,
+        linesOnSlide: 1,
+        maxWidth: MAX_WIDTH_SLIDE_PREACHING,
+      }
     }
     default: {
-      return { name: '', content: '', defaultName: false, emptyWrapper: false, extraEmptySlides: false, type: PREACHING }
+      return {
+        ...generalSettings,
+        defaultName: false,
+        blankBeginningAndEnd: false,
+        blankBesideSlide: false,
+        lineBreak: true,
+        linesOnSlide: 1,
+        type: 'default',
+      }
     }
   }
 }

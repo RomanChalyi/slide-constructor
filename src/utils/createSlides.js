@@ -3,17 +3,13 @@ import getBlocks from './songTemplate/getBlocks'
 import getText from './getText'
 import getIds from './getIds'
 import getLines from './getLines'
-import Presentation from './slideConstructor/presentation'
 
 const getSlide = (textSong, createEmptySlides, formData) => {
   const lines = getLines(textSong)
-  //   console.log(lines, 'lines')
-  const presentation = new Presentation(formData)
-  console.log(presentation, 'presentation')
+
   const quantitySlides = createEmptySlides ? Math.ceil(lines.length / 2) + 2 : Math.ceil(lines.length / 2)
 
   const ids = getIds(quantitySlides)
-  //   console.log(ids, 'ids')
   const { PKGParts, sldIdLst, lpstr } = getText(quantitySlides, ids, lines)
   const relationships = getRelationships(quantitySlides, ids)
   const blocks = getBlocks(quantitySlides, lines, createEmptySlides)
