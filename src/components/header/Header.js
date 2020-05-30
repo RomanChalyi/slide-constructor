@@ -30,7 +30,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 
 import app from 'firebase/app'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -58,7 +58,7 @@ const Header = () => {
     setAnchorEl(null)
   }
 
-  const toggleDrawer = open => event => {
+  const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
@@ -66,7 +66,7 @@ const Header = () => {
     setOpenDrawer(open)
   }
 
-  const handleMenu = event => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -77,15 +77,16 @@ const Header = () => {
       .then(
         () => {
           console.log('Signed Out')
+          localStorage.removeItem('user')
           history.push('/sign_in')
         },
-        error => {
+        (error) => {
           console.error('Sign Out Error', error)
         }
       )
   }
 
-  const list = anchor => (
+  const list = (anchor) => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
