@@ -47,7 +47,7 @@ const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
   const open = Boolean(anchorEl)
   const history = useHistory()
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -154,7 +154,7 @@ const Header = () => {
                 >
                   <AccountCircle />
                 </IconButton>
-                {user.role === 'admin' && <p>LW Team</p>}
+                {user && user.role === 'admin' && <p>LW Team</p>}
               </Grid>
 
               <Menu

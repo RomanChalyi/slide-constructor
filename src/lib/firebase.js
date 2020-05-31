@@ -19,8 +19,9 @@ app.initializeApp(config)
 
 let auth = app.auth()
 let db = app.firestore()
-let usersDB = db.collection('users')
-// let storage = app.storage() //.ref('gs://slide-creator-d1df7.appspot.com/slides')
+let usersCLL = db.collection('users')
+let slidesCLL = db.collection('slides')
+let slidesLwCLL = db.collection('slides_lw')
 let storage = app.storage()
 
 const onAuthStateChanged = () => null
@@ -29,22 +30,22 @@ const signIn = (email, password) => auth.signInWithEmailAndPassword(email, passw
 
 const signUp = (email, password) => auth.createUserWithEmailAndPassword(email, password)
 
-export { onAuthStateChanged, signUp, signIn, usersDB, storage }
+export { onAuthStateChanged, signUp, signIn, usersCLL, storage, slidesCLL, slidesLwCLL }
 
 //UPDATE one
-// usersDB.doc('mario').update({
+// usersCLL.doc('mario').update({
 //   outfitColor: 'red',
 // })
 
 //SET one
-// usersDB.doc('mario').set({
+// usersCLL.doc('mario').set({
 //   employment: 'plumber',
 //   outfitColor: 'green',
 //   specialAttack: 'fireball',
 // })
 
 //GET all
-// usersDB.get().then(querySnapshot => {
+// usersCLL.get().then(querySnapshot => {
 //   const arrUsers = []
 //   querySnapshot.docs.map(function(documentSnapshot) {
 //     !documentSnapshot.data().test && arrUsers.push(documentSnapshot.data())
@@ -53,7 +54,7 @@ export { onAuthStateChanged, signUp, signIn, usersDB, storage }
 // })
 
 //GET from id
-// usersDB
+// usersCLL
 //   .doc('mario')
 //   .get()
 //   .then(user => console.log('user', user.data()))
