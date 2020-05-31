@@ -1,6 +1,7 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import '@firebase/firestore'
+import 'firebase/storage'
 
 const config = {
   apiKey: 'AIzaSyAUVujq70Urk4aHEsFFm7RIVnIJxp8NaEE',
@@ -15,9 +16,12 @@ const config = {
 
 // Initialize Firebase
 app.initializeApp(config)
+
 let auth = app.auth()
 let db = app.firestore()
 let usersDB = db.collection('users')
+// let storage = app.storage() //.ref('gs://slide-creator-d1df7.appspot.com/slides')
+let storage = app.storage()
 
 const onAuthStateChanged = () => null
 
@@ -25,7 +29,7 @@ const signIn = (email, password) => auth.signInWithEmailAndPassword(email, passw
 
 const signUp = (email, password) => auth.createUserWithEmailAndPassword(email, password)
 
-export { onAuthStateChanged, signUp, signIn, usersDB }
+export { onAuthStateChanged, signUp, signIn, usersDB, storage }
 
 //UPDATE one
 // usersDB.doc('mario').update({

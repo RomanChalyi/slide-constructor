@@ -122,60 +122,68 @@ const Header = () => {
   )
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Grid container direction="row" justify="space-between" alignItems="center">
-          <Grid item xs={12} sm={8}>
-            <Grid container direction="row" justify="flex-start" alignItems="center">
-              <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-                <MenuIcon />
-              </IconButton>
-              <Typography component={Link} to="/" variant="h6" className={classes.title}>
-                {t('Header.title')}
-              </Typography>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Grid container direction="row" justify="space-between" alignItems="center">
+            <Grid item xs={12} sm={8}>
+              <Grid container direction="row" justify="flex-start" alignItems="center">
+                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+                  <MenuIcon />
+                </IconButton>
+                <Typography component={Link} to="/" variant="h6" className={classes.title}>
+                  {t('Header.title')}
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Grid container direction="row" justify="flex-end" alignItems="center">
-              <Box>
-                <Grid container direction="row" justify="flex-end" alignItems="center">
-                  <p>EN</p>
-                  <Switch color="default" onClick={handleChange} />
-                  <p>RUS</p>
-                </Grid>
-              </Box>
-              <IconButton aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" color="inherit" onClick={handleMenu}>
-                <AccountCircle />
-              </IconButton>
-              {user.role === 'admin' && <p>LW Team</p>}
-            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Grid container direction="row" justify="flex-end" alignItems="center">
+                <Box>
+                  <Grid container direction="row" justify="flex-end" alignItems="center">
+                    <p>EN</p>
+                    <Switch color="default" onClick={handleChange} />
+                    <p>RUS</p>
+                  </Grid>
+                </Box>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={handleMenu}
+                >
+                  <AccountCircle />
+                </IconButton>
+                {user.role === 'admin' && <p>LW Team</p>}
+              </Grid>
 
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={logOutHandler}>Log out</MenuItem>
-            </Menu>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={logOutHandler}>Log out</MenuItem>
+              </Menu>
+            </Grid>
           </Grid>
-        </Grid>
-      </Toolbar>
+        </Toolbar>
+      </AppBar>
       <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
         {list('left')}
       </Drawer>
-    </AppBar>
+    </>
   )
 }
 export default Header

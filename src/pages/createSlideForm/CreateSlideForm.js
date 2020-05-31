@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
 import createSlides from '../../utils/createSlides'
 import getFilename from '../../utils/getFilename'
+import { storage } from '../../lib/firebase'
 
 const CreateSlideForm = () => {
   const { t } = useTranslation()
@@ -34,6 +35,7 @@ const CreateSlideForm = () => {
 
     const name = getFilename(defaultFilename, textSong, filename)
     const slides = createSlides(textSong, createEmptySlides)
+    storage.ref('slides/' + name).put(slides)
     saveAs(slides, name)
   }
 
