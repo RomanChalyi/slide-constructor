@@ -5,10 +5,13 @@ import Router from './Router'
 import './styles/global.scss'
 import { usersCLL } from './lib/firebase'
 import app from 'firebase/app'
+import { UserProvider } from './context/UserContext'
 
 const App = () => {
   const [isLoad, setIsload] = useState(false)
   const history = useHistory()
+  const [user, setUser] = useState(null)
+
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
       let redirect = ''
@@ -16,18 +19,22 @@ const App = () => {
         usersCLL
           .doc(user.uid)
           .get()
-          .then((user) => localStorage.setItem('user', JSON.stringify(user.data())))
+          .then((user) => {
+            setUser(user.data())
+            setIsload(true)
+          })
         redirect = history.location.pathname
       } else {
         localStorage.removeItem('user')
+        setIsload(true)
         redirect = '/sign_in'
       }
-      setIsload(true)
+
       history.push(redirect)
     })
   }, [history])
 
-  return <>{isLoad ? <Router /> : <h1>Loading....</h1>}</>
+  return <UserProvider value={{ user }}>{isLoad ? <Router /> : <h1>Loading....</h1>}</UserProvider>
 }
 
 export default App

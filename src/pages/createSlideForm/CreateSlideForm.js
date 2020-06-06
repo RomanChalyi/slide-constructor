@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { saveAs } from 'file-saver'
+import UserContext from '../../context/UserContext'
+
 import {
   Card,
   InputLabel,
@@ -17,13 +19,13 @@ import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
 import createSlides from '../../utils/createSlides'
 import getFilename from '../../utils/getFilename'
-import { usersCLL, storage, slidesCLL, slidesLwCLL } from '../../lib/firebase'
-import app from 'firebase/app'
+import { storage, slidesCLL, slidesLwCLL } from '../../lib/firebase'
 
 const CreateSlideForm = () => {
   const initValuesForm = { filename: '', defaultFilename: true, textSong: '', createEmptySlides: true }
   const { t } = useTranslation()
   const [form, setForm] = useState(initValuesForm)
+  const { user } = useContext(UserContext)
 
   const handleChangeCheckbox = (e) => {
     const { name, checked } = e.target
@@ -35,7 +37,6 @@ const CreateSlideForm = () => {
   const handleCreate = () => {
     const { defaultFilename, textSong, filename, createEmptySlides } = form
 
-    const user = JSON.parse(localStorage.getItem('user'))
     const name = getFilename(defaultFilename, textSong, filename)
     const slides = createSlides(textSong, createEmptySlides)
     if (user.role === 'admin') {

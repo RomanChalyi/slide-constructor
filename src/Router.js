@@ -7,12 +7,14 @@ import { StickyContainer, Sticky } from 'react-sticky'
 import Autorization from './pages/Autorization/Autorization'
 import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
+import Collections from './pages/Collections'
 
 const RouterPageContent = () => (
   <Switch>
     <Route exact path="/" component={TemplatesList} />
     <Route exact path="/main" component={TemplatesList} />
     <Route exact path="/main/create" component={CreateSlideForm} />
+    <Route exact path="/main/collections" component={Collections} />
     <Route component={NoMatchPage} />
   </Switch>
 )

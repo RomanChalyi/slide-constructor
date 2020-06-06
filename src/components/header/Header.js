@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import i18n from '../../i18n'
 import clsx from 'clsx'
+import UserContext from '../../context/UserContext'
 
-import { Link, useHistory } from 'react-router-dom'
+import { Link as LinkR, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
+import Link from '@material-ui/core/Link'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
@@ -24,10 +26,10 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
+import InfoIcon from '@material-ui/icons/Info'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 
+import navbarLinks from '../../lib/navbarLinks'
 import app from 'firebase/app'
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: 'white',
+  },
+  list: {
+    padding: '0px 5px',
   },
 }))
 
@@ -47,12 +52,7 @@ const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
   const open = Boolean(anchorEl)
   const history = useHistory()
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    setUser(user)
-  }, [])
+  const { user } = useContext(UserContext)
 
   const handleChange = () => {
     const newLang = lang === 'en' ? 'ru' : 'en'
@@ -98,25 +98,34 @@ const Header = () => {
         [classes.fullList]: anchor === 'top',
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+        {navbarLinks.map((item) => (
+          <Link key={item.name} to={item.path} component={LinkR} color="inherit">
+            <ListItem button>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItem>
+          </Link>
         ))}
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        <Link
+          href="http://lword.org/%d0%b2%d0%b5%d1%80%d0%be%d1%83%d1%87%d0%b5%d0%bd%d0%b8%d0%b5/"
+          color="inherit"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Living Word'} />
           </ListItem>
-        ))}
+        </Link>
       </List>
     </div>
   )
