@@ -28,10 +28,11 @@ function a11yProps(index) {
   }
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 500,
+    width: '100%',
+    maxWidth: 750,
     padding: '10%',
   },
 }))
@@ -45,7 +46,7 @@ const Autorization = () => {
     setValue(newValue)
   }
 
-  const handleChangeIndex = index => {
+  const handleChangeIndex = (index) => {
     setValue(index)
   }
 

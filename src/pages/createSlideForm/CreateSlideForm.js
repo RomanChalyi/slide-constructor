@@ -42,13 +42,13 @@ const CreateSlideForm = () => {
     if (user.role === 'admin') {
       storage.ref('slides_lw/' + name).put(slides)
       slidesLwCLL.doc(name).set({
-        test: textSong,
+        text: textSong,
         name: name,
       })
     } else {
       storage.ref('slides/' + name).put(slides)
       slidesCLL.doc(name).set({
-        test: textSong,
+        text: textSong,
         name: name,
       })
     }
