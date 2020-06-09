@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { saveAs } from 'file-saver'
+import UserContext from '../../context/UserContext'
+
 import {
   Card,
   InputLabel,
@@ -18,12 +20,14 @@ import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
 import createPresentation from '../../utils/slideConstructor'
 import { getDefaultSetting, getFilename } from '../../utils'
+import { storage, slidesCLL, slidesLwCLL } from '../../lib/firebase'
 import { SONG } from '../../constant'
 
 const CreateSlideForm = ({ location }) => {
   const { t } = useTranslation()
   const [form, setForm] = useState(getDefaultSetting(location))
 
+  const { user } = useContext(UserContext)
   const handleChangeCheckbox = (e) => {
     const { name, checked } = e.target
     return setForm({ ...form, [name]: checked })
@@ -49,7 +53,37 @@ const CreateSlideForm = ({ location }) => {
   const handleCreate = () => {
     const presentation = createPresentation(form)
     const fileName = `${form.name}.xml`
+
     saveAs(presentation, fileName)
+    if (user.role === 'admin') {
+      storage.ref('slides_lw/' + fileName).put(presentation)
+      slidesLwCLL.doc(form.name).set({
+        text: form.content,
+        name: form.name,
+      })
+    } else {
+      storage.ref('slides/' + form.name).put(presentation)
+      slidesCLL.doc(form.name).set({
+        text: form.content,
+        name: form.name,
+      })
+    }
+
+    setForm(getDefaultSetting(location))
+  }
+
+  useEffect(() => {
+    search()
+  }, [])
+
+  // TODO Search in another page
+  const search = async () => {
+    let a = slidesLwCLL
+      .orderBy('name')
+      .startAt('Братья')
+      .endAt('Братья' + '~')
+      .get()
+    const [titleSnap] = await Promise.all([a])
   }
 
   return (

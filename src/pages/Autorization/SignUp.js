@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 
 import { Button, TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { signUp, usersDB } from '../../lib/firebase'
+import { signUp, usersCLL } from '../../lib/firebase'
 
 const useStyles = makeStyles(() => ({
   input: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const validate = values => {
+const validate = (values) => {
   const errors = {}
   if (!values.password) {
     errors.password = 'Required'
@@ -44,10 +44,10 @@ const SignUp = () => {
       name: '',
     },
     validate,
-    onSubmit: values => {
+    onSubmit: (values) => {
       signUp(values.email, values.password)
-        .then(data => {
-          usersDB.doc(data.user.uid).set({
+        .then((data) => {
+          usersCLL.doc(data.user.uid).set({
             uid: data.user.uid,
             email: values.email,
             role: 'user',
@@ -55,7 +55,7 @@ const SignUp = () => {
           })
           history.push('/main/')
         })
-        .catch(error => alert(error.message))
+        .catch((error) => alert(error.message))
     },
   })
 

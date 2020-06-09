@@ -42,7 +42,6 @@ const getSlideText = (slide) => {
 const getPreachingSlide = (slide) => {
   const index = slide.index - 1
   const slideText = getSlideText(slide)
-  console.log(slideText, 'slideText')
 
   return ` <pkg:part pkg:name="/ppt/slides/slide${index}.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml">
 <pkg:xmlData>
