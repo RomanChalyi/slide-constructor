@@ -45,6 +45,8 @@ const App = () => {
     })
   }, [history])
 
+  console.log(user, 'sdfsd')
+
   return (
     <UserProvider value={{ user }}>
       {isLoad ? (

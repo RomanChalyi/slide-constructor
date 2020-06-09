@@ -13,7 +13,7 @@ const RouterPageContent = () => (
   <Switch>
     <Route exact path="/" component={TemplatesList} />
     <Route exact path="/main" component={TemplatesList} />
-    <Route exact path="/main/create" component={CreateSlideForm} />
+    <Route exact path="/main/create/:type" component={CreateSlideForm} />
     <Route exact path="/main/collections" component={Collections} />
     <Route component={NoMatchPage} />
   </Switch>

@@ -14,47 +14,62 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  Slider,
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
-import createSlides from '../../utils/createSlides'
-import getFilename from '../../utils/getFilename'
+import createPresentation from '../../utils/slideConstructor'
+import { getDefaultSetting, getFilename } from '../../utils'
 import { storage, slidesCLL, slidesLwCLL } from '../../lib/firebase'
+import { SONG } from '../../constant'
 
-const CreateSlideForm = () => {
-  const initValuesForm = { filename: '', defaultFilename: true, textSong: '', createEmptySlides: true }
+const CreateSlideForm = ({ location }) => {
   const { t } = useTranslation()
-  const [form, setForm] = useState(initValuesForm)
-  const { user } = useContext(UserContext)
+  const [form, setForm] = useState(getDefaultSetting(location))
 
+  const { user } = useContext(UserContext)
   const handleChangeCheckbox = (e) => {
     const { name, checked } = e.target
     return setForm({ ...form, [name]: checked })
   }
-  const handleChangeFilename = (e) => setForm({ ...form, filename: e.target.value })
-  const handleChangeTextSong = (e) => setForm({ ...form, textSong: e.target.value })
+  const handleDefaultName = (e) => {
+    if (e.target.checked) {
+      return setForm({ ...form, name: getFilename(form.content), defaultName: true })
+    }
+    return setForm({ ...form, name: '', defaultName: false })
+  }
+
+  const handleChangeName = (e) => setForm({ ...form, name: e.target.value })
+  const handlePresentationContent = (e) => {
+    if (form.defaultName) {
+      return setForm({ ...form, content: e.target.value, name: getFilename(e.target.value) })
+    }
+
+    return setForm({ ...form, content: e.target.value })
+  }
+
+  const handleChangeLineOnSlide = (e, value) => setForm({ ...form, linesOnSlide: value })
 
   const handleCreate = () => {
-    const { defaultFilename, textSong, filename, createEmptySlides } = form
+    const presentation = createPresentation(form)
+    const fileName = `${form.name}.xml`
 
-    const name = getFilename(defaultFilename, textSong, filename)
-    const slides = createSlides(textSong, createEmptySlides)
+    saveAs(presentation, fileName)
     if (user.role === 'admin') {
-      storage.ref('slides_lw/' + name).put(slides)
-      slidesLwCLL.doc(name).set({
-        text: textSong,
-        name: name,
+      storage.ref('slides_lw/' + fileName).put(presentation)
+      slidesLwCLL.doc(form.name).set({
+        text: form.content,
+        name: form.name,
       })
     } else {
-      storage.ref('slides/' + name).put(slides)
-      slidesCLL.doc(name).set({
-        text: textSong,
-        name: name,
+      storage.ref('slides/' + form.name).put(presentation)
+      slidesCLL.doc(form.name).set({
+        text: form.content,
+        name: form.name,
       })
     }
 
-    setForm(initValuesForm)
-    saveAs(slides, name)
+    setForm(getDefaultSetting(location))
   }
 
   useEffect(() => {
@@ -69,7 +84,6 @@ const CreateSlideForm = () => {
       .endAt('Братья' + '~')
       .get()
     const [titleSnap] = await Promise.all([a])
-    console.log(titleSnap.docs[0].data())
   }
 
   return (
@@ -78,35 +92,49 @@ const CreateSlideForm = () => {
         <Card>
           <CardContent>
             <InputLabel className={formTitle} htmlFor="form-title">
-              {t('CreateForm.filename')}
+              {t('CreateForm.name')}
               <Box component="span" color="error.main">
                 *
               </Box>
             </InputLabel>
-            <TextField
-              onChange={handleChangeFilename}
-              value={form.filename}
-              disabled={form.defaultFilename}
-              id="form-filename"
-              fullWidth
-              variant="outlined"
-            />
+            <TextField onChange={handleChangeName} value={form.name} disabled={form.defaultName} id="form-name" fullWidth variant="outlined" />
             <FormControlLabel
-              control={<Checkbox checked={form.defaultFilename} onChange={handleChangeCheckbox} name="defaultFilename" color="primary" />}
-              label={t('CreateForm.label-filename')}
+              control={<Checkbox checked={form.defaultName} onChange={handleDefaultName} name="defaultName" color="primary" />}
+              label={t('CreateForm.defaultName')}
             />
 
             <Typography style={{ margin: '20px 0px 5px' }} color="textSecondary">
-              {t('CreateForm.textSong')}
+              {t('CreateForm.content')}
               <Box component="span" color="error.main">
                 *
               </Box>
             </Typography>
-            <TextField value={form.textSong} onChange={handleChangeTextSong} fullWidth id="form-textSong" multiline rows="13" variant="outlined" />
+            <TextField value={form.content} onChange={handlePresentationContent} fullWidth multiline rows="13" variant="outlined" />
             <FormControlLabel
-              control={<Checkbox checked={form.createEmptySlides} onChange={handleChangeCheckbox} name="createEmptySlides" color="primary" />}
-              label={t('CreateForm.label-empty-slide')}
+              control={<Checkbox checked={form.blankBeginningAndEnd} onChange={handleChangeCheckbox} name="blankBeginningAndEnd" color="primary" />}
+              label={t('CreateForm.blankBeginningAndEnd')}
             />
+            <FormControlLabel
+              control={<Checkbox checked={form.blankBesideSlide} onChange={handleChangeCheckbox} name="blankBesideSlide" color="primary" />}
+              label={t('CreateForm.blankBesideSlide')}
+            />
+            {form.type === SONG && (
+              <>
+                <Typography id="discrete-slider" gutterBottom>
+                  {t('CreateForm.numberOfLines')}
+                </Typography>
+                <Slider
+                  value={form.linesOnSlide}
+                  onChange={handleChangeLineOnSlide}
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                />
+              </>
+            )}
           </CardContent>
 
           <CardActions style={{ display: 'flex', justifyContent: 'center' }}>

@@ -4,8 +4,12 @@ import { useTranslation } from 'react-i18next'
 import SlideTemplate from '../../components/slideTemplate/SlideTemplate'
 import { container, title, templatesContainer } from './templatesList.module.scss'
 import withAuth from '../../lib/withAuth'
+import { SONG, PREACHING } from '../../constant'
 
-const slideTemplates = [{ quantityLines: 2 }, { quantityLines: 4, justify: 'center', alignItems: 'start' }]
+const slideTemplates = [
+  { type: SONG, quantityLines: 2 },
+  { type: PREACHING, quantityLines: 4, justify: 'center', alignItems: 'start' },
+]
 
 const TemplatesList = () => {
   const { t } = useTranslation()
@@ -17,7 +21,13 @@ const TemplatesList = () => {
         </Typography>
         <Box className={templatesContainer}>
           {slideTemplates.map((template, index) => (
-            <SlideTemplate key={index} quantityLines={template.quantityLines} justify={template.justify} alignItems={template.alignItems} />
+            <SlideTemplate
+              type={template.type}
+              key={index}
+              quantityLines={template.quantityLines}
+              justify={template.justify}
+              alignItems={template.alignItems}
+            />
           ))}
         </Box>
       </Container>

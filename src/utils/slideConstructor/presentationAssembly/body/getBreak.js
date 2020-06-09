@@ -1,5 +1,5 @@
 const getBreak = (size) => {
-  return `                  <a:br>
+  return `<a:br>
 <a:rPr lang="en-US"
   sz="${size}"
   b="1"
@@ -7,6 +7,6 @@ const getBreak = (size) => {
   smtClean="0">
   <a:latin typeface="+mn-lt"/>
 </a:rPr>
-</a:br>`;
-};
-export default getBreak;
+</a:br>`
+}
+export default getBreak
