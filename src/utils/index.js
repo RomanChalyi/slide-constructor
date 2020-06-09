@@ -2,7 +2,9 @@ import { SONG, PREACHING, MAX_WIDTH_SLIDE_SONG, MAX_WIDTH_SLIDE_PREACHING } from
 
 export const getDefaultSetting = (location) => {
   const url = location.pathname.split('/')
+
   const type = url[url.length - 1].toUpperCase()
+
   const generalSettings = { name: '', content: '', type, maxFontSize: 40, fontFamily: 'Arial' }
   switch (type) {
     case SONG: {
@@ -24,8 +26,9 @@ export const getDefaultSetting = (location) => {
         blankBeginningAndEnd: true,
         blankBesideSlide: true,
         lineBreak: true,
-        linesOnSlide: 1,
+        linesOnSlide: 100,
         maxWidth: MAX_WIDTH_SLIDE_PREACHING,
+        maxFontSize: 38,
       }
     }
     default: {

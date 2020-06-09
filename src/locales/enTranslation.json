@@ -15,7 +15,8 @@
     "content": "Presentation content",
     "blankBeginningAndEnd": "Add an empty slide to the beginning and the end",
     "create": "create",
-    "blankBesideSlide": "Add extra empty slides"
+    "blankBesideSlide": "Add extra empty slides",
+    "numberOfLines" : "Number of lines"
   },
   "TemplatesList": {
     "title": "Select the template to create a slide:"

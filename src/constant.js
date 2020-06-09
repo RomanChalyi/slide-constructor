@@ -5,4 +5,4 @@ export const EMPTY = 'EMPTY'
 
 //SLIDE_WIDTH
 export const MAX_WIDTH_SLIDE_SONG = 710
-export const MAX_WIDTH_SLIDE_PREACHING = 400
+export const MAX_WIDTH_SLIDE_PREACHING = 3504

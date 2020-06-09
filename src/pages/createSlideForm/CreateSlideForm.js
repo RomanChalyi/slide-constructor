@@ -12,11 +12,13 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  Slider,
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { formContainer, formTitle } from './createSlideForm.module.scss'
 import createPresentation from '../../utils/slideConstructor'
 import { getDefaultSetting, getFilename } from '../../utils'
+import { SONG } from '../../constant'
 
 const CreateSlideForm = ({ location }) => {
   const { t } = useTranslation()
@@ -34,11 +36,20 @@ const CreateSlideForm = ({ location }) => {
   }
 
   const handleChangeName = (e) => setForm({ ...form, name: e.target.value })
-  const handlePresentationContent = (e) => setForm({ ...form, content: e.target.value, name: getFilename(e.target.value) })
+  const handlePresentationContent = (e) => {
+    if (form.defaultName) {
+      return setForm({ ...form, content: e.target.value, name: getFilename(e.target.value) })
+    }
+
+    return setForm({ ...form, content: e.target.value })
+  }
+
+  const handleChangeLineOnSlide = (e, value) => setForm({ ...form, linesOnSlide: value })
 
   const handleCreate = () => {
     const presentation = createPresentation(form)
-    // saveAs(slides, form.name)
+    const fileName = `${form.name}.xml`
+    saveAs(presentation, fileName)
   }
 
   return (
@@ -73,6 +84,23 @@ const CreateSlideForm = ({ location }) => {
               control={<Checkbox checked={form.blankBesideSlide} onChange={handleChangeCheckbox} name="blankBesideSlide" color="primary" />}
               label={t('CreateForm.blankBesideSlide')}
             />
+            {form.type === SONG && (
+              <>
+                <Typography id="discrete-slider" gutterBottom>
+                  {t('CreateForm.numberOfLines')}
+                </Typography>
+                <Slider
+                  value={form.linesOnSlide}
+                  onChange={handleChangeLineOnSlide}
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                />
+              </>
+            )}
           </CardContent>
 
           <CardActions style={{ display: 'flex', justifyContent: 'center' }}>

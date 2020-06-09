@@ -31,6 +31,7 @@ const getSlides = (block, linesOnSlide) => {
 }
 
 const getWidthOfText = (txt, fontsize, fontFamily) => {
+  console.log(fontsize, ';fontsize')
   const canvas = document.createElement('canvas').getContext('2d')
   canvas.font = `bold ${fontsize}px ${fontFamily}`
   return canvas.measureText(txt).width
@@ -91,11 +92,9 @@ const addBlankBesideSlide = (slides, blankBeginningAndEnd) => {
 }
 
 const addIds = (slides) => {
-  const quantitySlides = slides.length
-  const getIds = (quantitySlides) => Array.from({ length: 6 + quantitySlides }, (v, k) => k + 1)
-  console.log(getIds(quantitySlides), 'getIds')
   slides.map((slide, i) => {
-    slide.id = i + 2
+    slide.index = i + 2
+    slide.id = Math.round(200 - 0.5 + Math.random() * (1900 - 200 + 1900))
     return slide
   })
   return slides
@@ -118,8 +117,7 @@ const getSlideData = (formData) => {
   }
 
   addIds(slides)
-
-  console.log(slides, 'slideBlock')
+  return slides
 }
 
 export default getSlideData
