@@ -1,4 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useContext,
+} from 'react'
 import { saveAs } from 'file-saver'
 import UserContext from '../../context/UserContext'
 
@@ -17,15 +21,27 @@ import {
   Slider,
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
-import { formContainer, formTitle } from './createSlideForm.module.scss'
+import {
+  formContainer,
+  formTitle,
+} from './createSlideForm.module.scss'
 import createPresentation from '../../utils/slideConstructor'
-import { getDefaultSetting, getFilename } from '../../utils'
-import { storage, slidesCLL, slidesLwCLL } from '../../lib/firebase'
+import {
+  getDefaultSetting,
+  getFilename,
+} from '../../utils'
+import {
+  storage,
+  slidesCLL,
+  slidesLwCLL,
+} from '../../lib/firebase'
 import { SONG } from '../../constant'
 
 const CreateSlideForm = ({ location }) => {
   const { t } = useTranslation()
-  const [form, setForm] = useState(getDefaultSetting(location))
+  const [form, setForm] = useState(
+    getDefaultSetting(location)
+  )
 
   const { user } = useContext(UserContext)
   const handleChangeCheckbox = (e) => {
@@ -34,21 +50,38 @@ const CreateSlideForm = ({ location }) => {
   }
   const handleDefaultName = (e) => {
     if (e.target.checked) {
-      return setForm({ ...form, name: getFilename(form.content), defaultName: true })
+      return setForm({
+        ...form,
+        name: getFilename(form.content),
+        defaultName: true,
+      })
     }
-    return setForm({ ...form, name: '', defaultName: false })
+    return setForm({
+      ...form,
+      name: '',
+      defaultName: false,
+    })
   }
 
-  const handleChangeName = (e) => setForm({ ...form, name: e.target.value })
+  const handleChangeName = (e) =>
+    setForm({ ...form, name: e.target.value })
   const handlePresentationContent = (e) => {
     if (form.defaultName) {
-      return setForm({ ...form, content: e.target.value, name: getFilename(e.target.value) })
+      return setForm({
+        ...form,
+        content: e.target.value,
+        name: getFilename(e.target.value),
+      })
     }
 
-    return setForm({ ...form, content: e.target.value })
+    return setForm({
+      ...form,
+      content: e.target.value,
+    })
   }
 
-  const handleChangeLineOnSlide = (e, value) => setForm({ ...form, linesOnSlide: value })
+  const handleChangeLineOnSlide = (e, value) =>
+    setForm({ ...form, linesOnSlide: value })
 
   const handleCreate = () => {
     const presentation = createPresentation(form)
@@ -56,13 +89,17 @@ const CreateSlideForm = ({ location }) => {
 
     saveAs(presentation, fileName)
     if (user.role === 'admin') {
-      storage.ref('slides_lw/' + fileName).put(presentation)
+      storage
+        .ref('slides_lw/' + fileName)
+        .put(presentation)
       slidesLwCLL.doc(form.name).set({
         text: form.content,
         name: form.name,
       })
     } else {
-      storage.ref('slides/' + form.name).put(presentation)
+      storage
+        .ref('slides/' + form.name)
+        .put(presentation)
       slidesCLL.doc(form.name).set({
         text: form.content,
         name: form.name,
@@ -88,44 +125,105 @@ const CreateSlideForm = ({ location }) => {
 
   return (
     <Box className="content">
-      <Container className={formContainer} maxWidth="sm">
+      <Container
+        className={formContainer}
+        maxWidth="sm"
+      >
         <Card>
           <CardContent>
-            <InputLabel className={formTitle} htmlFor="form-title">
+            <InputLabel
+              className={formTitle}
+              htmlFor="form-title"
+            >
               {t('CreateForm.name')}
-              <Box component="span" color="error.main">
+              <Box
+                component="span"
+                color="error.main"
+              >
                 *
               </Box>
             </InputLabel>
-            <TextField onChange={handleChangeName} value={form.name} disabled={form.defaultName} id="form-name" fullWidth variant="outlined" />
+            <TextField
+              onChange={handleChangeName}
+              value={form.name}
+              disabled={form.defaultName}
+              id="form-name"
+              fullWidth
+              variant="outlined"
+            />
             <FormControlLabel
-              control={<Checkbox checked={form.defaultName} onChange={handleDefaultName} name="defaultName" color="primary" />}
+              control={
+                <Checkbox
+                  checked={form.defaultName}
+                  onChange={handleDefaultName}
+                  name="defaultName"
+                  color="primary"
+                />
+              }
               label={t('CreateForm.defaultName')}
             />
 
-            <Typography style={{ margin: '20px 0px 5px' }} color="textSecondary">
+            <Typography
+              style={{ margin: '20px 0px 5px' }}
+              color="textSecondary"
+            >
               {t('CreateForm.content')}
-              <Box component="span" color="error.main">
+              <Box
+                component="span"
+                color="error.main"
+              >
                 *
               </Box>
             </Typography>
-            <TextField value={form.content} onChange={handlePresentationContent} fullWidth multiline rows="13" variant="outlined" />
-            <FormControlLabel
-              control={<Checkbox checked={form.blankBeginningAndEnd} onChange={handleChangeCheckbox} name="blankBeginningAndEnd" color="primary" />}
-              label={t('CreateForm.blankBeginningAndEnd')}
+            <TextField
+              value={form.content}
+              onChange={handlePresentationContent}
+              fullWidth
+              multiline
+              rows="13"
+              variant="outlined"
             />
             <FormControlLabel
-              control={<Checkbox checked={form.blankBesideSlide} onChange={handleChangeCheckbox} name="blankBesideSlide" color="primary" />}
-              label={t('CreateForm.blankBesideSlide')}
+              control={
+                <Checkbox
+                  checked={
+                    form.blankBeginningAndEnd
+                  }
+                  onChange={handleChangeCheckbox}
+                  name="blankBeginningAndEnd"
+                  color="primary"
+                />
+              }
+              label={t(
+                'CreateForm.blankBeginningAndEnd'
+              )}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={form.blankBesideSlide}
+                  onChange={handleChangeCheckbox}
+                  name="blankBesideSlide"
+                  color="primary"
+                />
+              }
+              label={t(
+                'CreateForm.blankBesideSlide'
+              )}
             />
             {form.type === SONG && (
               <>
-                <Typography id="discrete-slider" gutterBottom>
+                <Typography
+                  id="discrete-slider"
+                  gutterBottom
+                >
                   {t('CreateForm.numberOfLines')}
                 </Typography>
                 <Slider
                   value={form.linesOnSlide}
-                  onChange={handleChangeLineOnSlide}
+                  onChange={
+                    handleChangeLineOnSlide
+                  }
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   step={1}
@@ -137,8 +235,19 @@ const CreateSlideForm = ({ location }) => {
             )}
           </CardContent>
 
-          <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleCreate} aria-label="create" size="small" variant="contained" color="primary">
+          <CardActions
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Button
+              onClick={handleCreate}
+              aria-label="create"
+              size="small"
+              variant="contained"
+              color="primary"
+            >
               {t('CreateForm.create')}
             </Button>
           </CardActions>
