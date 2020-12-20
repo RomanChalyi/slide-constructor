@@ -40,12 +40,8 @@ const Main = () => {
 const Router = () => (
   <>
     <Switch>
-      <Route exact path="/" component={Main} />
-      <Route path="/main" component={Main} />
-    </Switch>
-    <Switch>
+      <Route exact paths={['/', '/main']} component={Main} />
       <Route exact path="/sign_in" component={Autorization} />
-      <Route path="/sign_in" component={Autorization} />
     </Switch>
   </>
 )
