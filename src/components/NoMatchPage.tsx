@@ -1,18 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import {
-  Container,
-  Card,
-  CardActions,
-  CardContent,
-  Button,
-  Typography,
-  Box,
-} from '@material-ui/core';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
+import { Container, Card, CardActions, CardContent, Button, Typography, Box } from '@material-ui/core'
 
 const NoMatchPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <Box className="content paddingTop">
       <Container maxWidth="sm">
@@ -30,7 +23,7 @@ const NoMatchPage = () => {
         </Card>
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default NoMatchPage;
+export default NoMatchPage

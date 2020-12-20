@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { saveAs } from 'file-saver'
+import styled from 'styled-components'
+
 import UserContext from '../../context/UserContext'
 
 import {
@@ -17,30 +19,30 @@ import {
   Slider,
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
-import { formContainer, formTitle } from './createSlideForm.module.scss'
+
 import createPresentation from '../../utils/slideConstructor'
 import { getDefaultSetting, getFilename } from '../../utils'
 import { storage, slidesCLL, slidesLwCLL } from '../../lib/firebase'
 import { SONG } from '../../constant'
 
-const CreateSlideForm = ({ location }) => {
+const CreateSlideForm = ({ location }: any) => {
   const { t } = useTranslation()
   const [form, setForm] = useState(getDefaultSetting(location))
 
-  const { user } = useContext(UserContext)
-  const handleChangeCheckbox = (e) => {
+  const { user }: any = useContext(UserContext)
+  const handleChangeCheckbox = (e: any) => {
     const { name, checked } = e.target
     return setForm({ ...form, [name]: checked })
   }
-  const handleDefaultName = (e) => {
+  const handleDefaultName = (e: any) => {
     if (e.target.checked) {
       return setForm({ ...form, name: getFilename(form.content), defaultName: true })
     }
     return setForm({ ...form, name: '', defaultName: false })
   }
 
-  const handleChangeName = (e) => setForm({ ...form, name: e.target.value })
-  const handlePresentationContent = (e) => {
+  const handleChangeName = (e: any) => setForm({ ...form, name: e.target.value })
+  const handlePresentationContent = (e: any) => {
     if (form.defaultName) {
       return setForm({ ...form, content: e.target.value, name: getFilename(e.target.value) })
     }
@@ -48,7 +50,7 @@ const CreateSlideForm = ({ location }) => {
     return setForm({ ...form, content: e.target.value })
   }
 
-  const handleChangeLineOnSlide = (e, value) => setForm({ ...form, linesOnSlide: value })
+  const handleChangeLineOnSlide = (e: any, value: any): void => setForm({ ...form, linesOnSlide: value })
 
   const handleCreate = () => {
     const presentation = createPresentation(form)
@@ -87,16 +89,16 @@ const CreateSlideForm = ({ location }) => {
   }
 
   return (
-    <Box className="content">
-      <Container className={formContainer} maxWidth="sm">
+    <Wrapper>
+      <FormContainer maxWidth="sm">
         <Card>
           <CardContent>
-            <InputLabel className={formTitle} htmlFor="form-title">
+            <Title htmlFor="form-title">
               {t('CreateForm.name')}
               <Box component="span" color="error.main">
                 *
               </Box>
-            </InputLabel>
+            </Title>
             <TextField onChange={handleChangeName} value={form.name} disabled={form.defaultName} id="form-name" fullWidth variant="outlined" />
             <FormControlLabel
               control={<Checkbox checked={form.defaultName} onChange={handleDefaultName} name="defaultName" color="primary" />}
@@ -143,8 +145,19 @@ const CreateSlideForm = ({ location }) => {
             </Button>
           </CardActions>
         </Card>
-      </Container>
-    </Box>
+      </FormContainer>
+    </Wrapper>
   )
 }
 export default CreateSlideForm
+
+const Wrapper = styled(Box)`
+  min-height: 100vh;
+`
+const FormContainer = styled(Container)`
+  height: 60vh;
+  padding-top: 60px;
+`
+const Title = styled(InputLabel)`
+  margin: 30px 0 5px;
+`
